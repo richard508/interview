@@ -1,5 +1,5 @@
 import React from "react"
-import { Layout, Table } from "antd"
+import { Card, Layout, Table } from "antd"
 import { connect } from "react-redux"
 import { getUsers } from "../../actions/users/UserActions"
 
@@ -15,16 +15,22 @@ const UserPage = ({ users, getUsers }) => {
     },
   ]
   // const data = []
-  const data = users && users.map((user) => {
-    return {
-      key: user.id,
-      company: user.company,
-      name: user.name,
-    }
-  })
+  const data =
+    users &&
+    users.map((user) => {
+      return {
+        key: user.id,
+        company: user.company,
+        name: user.name,
+      }
+    })
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      console.log(
+        `selectedRowKeys: ${selectedRowKeys}`,
+        "selectedRows: ",
+        selectedRows
+      )
     },
   }
   const { Header, Content, Footer } = Layout
@@ -42,16 +48,20 @@ const UserPage = ({ users, getUsers }) => {
         style={{ padding: 0 }}
       />
       <Content style={{ margin: "24px 16px 0" }}>
-      <Table
-        rowSelection={{
-          type: 'checkbox',
-          ...rowSelection,
-        }}
-        columns={columns}
-        dataSource={data}
-      />
+        <Card>
+          <Table
+            rowSelection={{
+              type: "checkbox",
+              ...rowSelection,
+            }}
+            columns={columns}
+            dataSource={data}
+          />
+        </Card>
       </Content>
-      <Footer style={{ textAlign: "center" }}>Interview Coding Challenge</Footer>
+      <Footer style={{ textAlign: "center" }}>
+        Interview Coding Challenge
+      </Footer>
     </Layout>
   )
 }
