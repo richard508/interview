@@ -15,7 +15,7 @@ const UserPage = ({ users, getUsers }) => {
     },
   ]
   // const data = []
-  const data = users.users && users.users.map((user) => {
+  const data = users && users.map((user) => {
     return {
       key: user.id,
       company: user.company,
@@ -51,14 +51,14 @@ const UserPage = ({ users, getUsers }) => {
         dataSource={data}
       />
       </Content>
-      <Footer style={{ textAlign: "center" }}>Interview design</Footer>
+      <Footer style={{ textAlign: "center" }}>Interview Coding Challenge</Footer>
     </Layout>
   )
 }
 
 export default connect(
   (state) => ({
-    users: state.users,
+    users: state.users.users,
   }),
   {
     getUsers,
