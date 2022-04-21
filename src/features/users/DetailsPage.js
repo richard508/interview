@@ -36,7 +36,7 @@ const UserDetailsPage = ({ data }) => {
   return (
     <>
       <Table columns={columns} dataSource={data} />
-      <Modal title={`${userData?.name}'s Profile'`} visible={openModal} onOk={handleOk} onCancel={handleCancel}>
+      <Modal title={`${userData?.name}'s Profile`} visible={openModal} onOk={handleOk} onCancel={handleCancel}>
         <Row>
           Age: {userData?.profile.age}
         </Row>
