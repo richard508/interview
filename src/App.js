@@ -4,11 +4,7 @@ import UserPage from "./features/users/UserPage"
 
 const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <UserPage />
-      </header>
-    </div>
+      <UserPage />
   )
 }
 
