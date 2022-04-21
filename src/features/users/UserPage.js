@@ -1,25 +1,25 @@
 import React from "react"
-import { Button, Card, Layout, Table } from "antd"
+import { Button, Checkbox, Card, Form, Layout } from "antd"
 import { connect } from "react-redux"
 import { getUsers } from "../../actions/users/UserActions"
+import UserDetailsPage from "./DetailsPage"
 
 const UserPage = ({ users, getUsers }) => {
   const { Header, Content, Footer } = Layout
   const [selectedRowKeys, setSelectedRowKeys] = React.useState([])
+  const [selectedUsers, setSelectedUsers] = React.useState([])
 
-  const columns = [
-    {
-      title: "Company",
-      dataIndex: "company",
-    },
-    {
-      title: "Name",
-      dataIndex: "name",
-    },
-  ]
-
-  const veiwRows = () => {
-    console.log(selectedRowKeys)
+  const onFinish = () => {
+    const filterUsers = users.filter((user) =>
+      selectedRowKeys.includes(user.id.toString())
+    )
+    const mappedUsers = filterUsers.map((user) => {
+      return {
+        ...user,
+        key: user.id,
+      }
+    })
+    setSelectedUsers(mappedUsers)
   }
 
   const onSelectChange = (selectedRowKeys) => {
@@ -31,15 +31,10 @@ const UserPage = ({ users, getUsers }) => {
     users.map((user) => {
       return {
         key: user.id,
-        company: user.company,
-        name: user.name,
+        label: `${user.name} - ${user.company}`,
+        value: `${user.id}`,
       }
     })
-
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  }
 
   const hasSelected = selectedRowKeys.length > 0
 
@@ -50,6 +45,7 @@ const UserPage = ({ users, getUsers }) => {
   React.useEffect(() => {
     loadUsers()
   }, [loadUsers])
+
   return (
     <Layout>
       <Header
@@ -58,21 +54,21 @@ const UserPage = ({ users, getUsers }) => {
       />
       <Content style={{ margin: "24px 16px 0" }}>
         <Card>
-          <div>
-            <div style={{ marginBottom: 16 }}>
-              <Button type="primary" onClick={veiwRows} disabled={!hasSelected}>
-                View Selected Rows
+          <Form name="validate_other" onFinish={onFinish}>
+            <Form.Item name="checkbox-group" label="Users">
+              <Checkbox.Group
+                style={{ display: "flex", flexDirection: "column" }}
+                onChange={onSelectChange}
+                options={data}
+              />
+            </Form.Item>
+            <Form.Item wrapperCol={{ span: 12, offset: 6 }}>
+              <Button disabled={!hasSelected} type="primary" htmlType="submit">
+                Submit
               </Button>
-              <span style={{ marginLeft: 8 }}>
-                {hasSelected ? `Selected ${selectedRowKeys.length} rows` : ""}
-              </span>
-            </div>
-            <Table
-              rowSelection={rowSelection}
-              columns={columns}
-              dataSource={data}
-            />
-          </div>
+            </Form.Item>
+          </Form>
+          <UserDetailsPage data={selectedUsers} />
         </Card>
       </Content>
       <Footer style={{ textAlign: "center" }}>
