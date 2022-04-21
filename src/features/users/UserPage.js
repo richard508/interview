@@ -1,9 +1,12 @@
 import React from "react"
-import { Card, Layout, Table } from "antd"
+import { Button, Card, Layout, Table } from "antd"
 import { connect } from "react-redux"
 import { getUsers } from "../../actions/users/UserActions"
 
 const UserPage = ({ users, getUsers }) => {
+  const { Header, Content, Footer } = Layout
+  const [selectedRowKeys, setSelectedRowKeys] = React.useState([])
+
   const columns = [
     {
       title: "Company",
@@ -14,7 +17,15 @@ const UserPage = ({ users, getUsers }) => {
       dataIndex: "name",
     },
   ]
-  // const data = []
+
+  const veiwRows = () => {
+    console.log(selectedRowKeys)
+  }
+
+  const onSelectChange = (selectedRowKeys) => {
+    setSelectedRowKeys(selectedRowKeys)
+  }
+
   const data =
     users &&
     users.map((user) => {
@@ -24,20 +35,18 @@ const UserPage = ({ users, getUsers }) => {
         name: user.name,
       }
     })
+
   const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      )
-    },
+    selectedRowKeys,
+    onChange: onSelectChange,
   }
-  const { Header, Content, Footer } = Layout
-  console.log(users)
+
+  const hasSelected = selectedRowKeys.length > 0
+
   const loadUsers = React.useCallback(async () => {
     getUsers()
   }, [getUsers])
+
   React.useEffect(() => {
     loadUsers()
   }, [loadUsers])
@@ -49,14 +58,21 @@ const UserPage = ({ users, getUsers }) => {
       />
       <Content style={{ margin: "24px 16px 0" }}>
         <Card>
-          <Table
-            rowSelection={{
-              type: "checkbox",
-              ...rowSelection,
-            }}
-            columns={columns}
-            dataSource={data}
-          />
+          <div>
+            <div style={{ marginBottom: 16 }}>
+              <Button type="primary" onClick={veiwRows} disabled={!hasSelected}>
+                View Selected Rows
+              </Button>
+              <span style={{ marginLeft: 8 }}>
+                {hasSelected ? `Selected ${selectedRowKeys.length} rows` : ""}
+              </span>
+            </div>
+            <Table
+              rowSelection={rowSelection}
+              columns={columns}
+              dataSource={data}
+            />
+          </div>
         </Card>
       </Content>
       <Footer style={{ textAlign: "center" }}>
