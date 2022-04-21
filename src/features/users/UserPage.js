@@ -47,13 +47,13 @@ const UserPage = ({ users, getUsers }) => {
   }, [loadUsers])
 
   return (
-    <Layout>
+    <Layout style={{ minHeight: "100vh" }}>
       <Header
         className="site-layout-sub-header-background"
         style={{ padding: 0 }}
       />
       <Content style={{ margin: "24px 16px 0" }}>
-        <Card>
+        <Card style={{minHeight: '78vh' }}>
           <Form name="validate_other" onFinish={onFinish}>
             <Form.Item name="checkbox-group" label="Users">
               <Checkbox.Group
