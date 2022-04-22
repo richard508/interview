@@ -4,7 +4,7 @@ import UserPage from "./features/users/UserPage"
 
 const App = () => {
   return (
-      <UserPage />
+    <UserPage />
   )
 }
 
